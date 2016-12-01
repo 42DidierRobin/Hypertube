@@ -1,0 +1,145 @@
+<div class="filter" id="filter" ng-class="{'filter-open': panelFilter}">
+    <div class="button">||</div>
+    <div class="logo"></div>
+    <div class="back">
+        <div class="category" ng-class="{'active':filter.filterBy==''}"
+             ng-click="categoryChange('')">
+            {{translate.general.all}}
+        </div>
+        <div class="category" ng-repeat="category in categories"
+             ng-class="{'active':filter.filterBy==category}"
+             ng-click="categoryChange(category)">
+            {{translate.categories[category]}}
+        </div>
+        <div class="range" ng-class="{'error' : filterError.year}">
+            <label>{{translate.general.year}}</label>
+            <input type="number" ng-model="filter.minimumYear" min="1900" max="2020" ng-change="filterChange()">
+            <input type="number" ng-model="filter.maximumYear" min="1990" max="2020" ng-change="filterChange()">
+        </div>
+        <div class="range" ng-class="{'error' : filterError.rating}">
+            <label>{{translate.general.rating}}</label>
+            <input type="number" ng-model="filter.minimumRating" min="0" max="10" ng-change="filterChange()">
+            <input type="number" ng-model="filter.maximumRating" min="0" max="10" ng-change="filterChange()">
+        </div>
+        <div class="sort" ng-if="searchValue">
+            <label>{{translate.general.sort}}</label>
+            <select name="" ng-model="filter.sortBy" ng-change="filterChange()">
+                <option ng-repeat="sort in sorts" value="{{sort}}">{{translate.general[sort]}}</option>
+            </select>
+            <div><span ng-class="filter.orderBy" ng-click="orderChange()"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span></div>
+        </div>
+    </div>
+</div>
+<div class="movies" ng-init="testModal=0" ng-class="{'overflow-hidden':idMovieOpen, 'filter-open': panelFilter}">
+    <div class="movie" ng-repeat="movie in movies" ng-class="{'movie-first':$first}" ng-style="{'animation-delay': (($index - filter.offset) * 5) + '0ms'}">
+        <div ng-click="movieOpen(movie.imdb)">
+            <img ng-src="{{movie.pictures}}" ng-if="movie.pictures != 'https://yts.ag/assets/images/movies/finding_dory_2016/medium-cover.jpg'" err-src="none.jpg" alt="">
+            <img ng-src="none.jpg" ng-if="movie.pictures == 'https://yts.ag/assets/images/movies/finding_dory_2016/medium-cover.jpg'" err-src="none.jpg" alt="">
+            <div class="info">
+                <h6>{{movie.tittle}}</h6>
+                <div class="year">{{movie.year}}</div>
+                <div class="rating">{{movie.rating}}<span>/10</span></div>
+            </div>
+            <div class="seen" ng-if="movie.seen"><i class="fa fa-play" aria-hidden="true"></i></div>
+        </div>
+    </div>
+</div>
+<div class="modal-movie" ng-show="idMovieOpen">
+    <div class="modal-close" ng-click="movieClose()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+    <div class="modal-body">
+        <div class="modal-poster"><img src="{{movie.mainPicture}}" alt=""></div>
+        <div class="modal-background" style="background-image: url({{movie.backPicture}})"></div>
+        <div class="modal-content">
+            <h1>{{movie.title}}</h1>
+            <p class="subInfo">
+                <span ng-repeat="genre in movie.genres">{{translate.categories[genre.name]}}</span><br>
+                <span>{{movie.release_date | date : "dd.MM.yyyy"}}</span><br>
+                <span>{{movie.rating}}/10</span><br>
+                <span><i class="fa fa-youtube-play" aria-hidden="true" ng-click="idYoutubeOpen=movie.trailer"></i></span>
+            </p>
+            <p class="overview">{{movie.overview}}</p>
+            <div ng-click="watchNow()" ng-show="!watch" class="buttonWatch">
+                <i class="fa fa-play" aria-hidden="true"></i>{{translate.movie.watchnow}}</div>
+            <div class="torrents" ng-class="{'torrentsShow':watch}">
+                <h6>YTS</h6>
+                <table>
+                    <tr ng-repeat="torrent in movie.torrents.yts" class="torrent">
+                        <td class="title">{{torrent.title}}</td>
+                        <td class="size"  ng-if="getStateTorrent(torrent.url)!='onDownload' && getStateTorrent(torrent.url)!='refuse'">{{torrent.size}}</td>
+                        <td class="seeds" ng-if="getStateTorrent(torrent.url)!='onDownload' && getStateTorrent(torrent.url)!='refuse'">{{torrent.seeds}}</td>
+                        <td class="peers" ng-if="getStateTorrent(torrent.url)!='onDownload' && getStateTorrent(torrent.url)!='refuse'">{{torrent.peers}}</td>
+                        <td class="error" colspan="3" ng-if="getStateTorrent(torrent.url)=='refuse'">{{translate.movie.error[torrentInDownload[torrent.url].refuse]}}</td>
+                        <td class="download" colspan="3" ng-if="getStateTorrent(torrent.url)=='onDownload'"><div><div ng-style="{width: torrentInDownload[torrent.url].progress + '%'}"></div></div></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='onDownload'">
+                            <span ng-if="!torrentInDownload[torrent.url].canPlay"><i class="fa fa-spinner" aria-hidden="true" style="color:green"></i></span>
+                            <span ng-if="torrentInDownload[torrent.url].canPlay"><a href="/player/{{torrentInDownload[torrent.url].id}}"><i class="fa fa-play" aria-hidden="true"></i></a></span>
+                        </td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='refuse'"><i class="fa fa-times" aria-hidden="true" style="color:red"></i></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='endDownload' && !torrent.download"><a href="/player/{{torrentInDownload[torrent.url].id}}"><i class="fa fa-play" aria-hidden="true" style="color:green"></i></a></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='loadAccepted'"><i class="fa fa-spinner" aria-hidden="true" style="color:green"></i></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='load'"><i class="fa fa-spinner" aria-hidden="true"></i></td>
+                        <td class="play" ng-if="!getStateTorrent(torrent.url) && !torrent.download" ng-click="addTorrent(torrent.url, idMovieOpen)"><i class="fa fa-play" aria-hidden="true"></i></td>
+                        <td class="play" ng-if="torrent.download"><a href="/player/{{torrent.download}}"><i class="fa fa-play" aria-hidden="true" style="color:green"></i></a></td>
+                    </tr>
+                </table>
+                <h6 ng-show="movie.torrents.extra_torrent.length>0">Extra torrent</h6>
+                <table>
+                    <tr ng-repeat="torrent in movie.torrents.extra_torrent" class="torrent">
+                        <td class="title">{{torrent.title}}</td>
+                        <td class="size"  ng-if="getStateTorrent(torrent.url)!='onDownload' && getStateTorrent(torrent.url)!='refuse'">{{torrent.size}}</td>
+                        <td class="seeds" ng-if="getStateTorrent(torrent.url)!='onDownload' && getStateTorrent(torrent.url)!='refuse'">{{torrent.seeds}}</td>
+                        <td class="peers" ng-if="getStateTorrent(torrent.url)!='onDownload' && getStateTorrent(torrent.url)!='refuse'">{{torrent.peers}}</td>
+                        <td class="error" colspan="3" ng-if="getStateTorrent(torrent.url)=='refuse'">{{translate.movie.error[torrentInDownload[torrent.url].refuse]}}</td>
+                        <td class="download" colspan="3" ng-if="getStateTorrent(torrent.url)=='onDownload'"><div><div ng-style="{width: torrentInDownload[torrent.url].progress + '%'}"></div></div></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='onDownload'">
+                            <span ng-if="!torrentInDownload[torrent.url].canPlay"><i class="fa fa-spinner" aria-hidden="true" style="color:green"></i></span>
+                            <span ng-if="torrentInDownload[torrent.url].canPlay"><a href="/player/{{torrentInDownload[torrent.url].id}}"><i class="fa fa-play" aria-hidden="true"></i></a></span>
+                        </td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='refuse'"><i class="fa fa-times" aria-hidden="true" style="color:red"></i></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='endDownload' && !torrent.download"><a href="/player/{{torrentInDownload[torrent.url].id}}"><i class="fa fa-play" aria-hidden="true" style="color:green"></i></a></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='loadAccepted'"><i class="fa fa-spinner" aria-hidden="true" style="color:green"></i></td>
+                        <td class="play" ng-if="getStateTorrent(torrent.url)=='load'"><i class="fa fa-spinner" aria-hidden="true"></i></td>
+                        <td class="play" ng-if="!getStateTorrent(torrent.url) && !torrent.download" ng-click="addTorrent(torrent.url, idMovieOpen)"><i class="fa fa-play" aria-hidden="true"></i></td>
+                        <td class="play" ng-if="torrent.download"><a href="/player/{{torrent.download}}"><i class="fa fa-play" aria-hidden="true" style="color:green"></i></a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="credits">
+                <div class="credit" ng-repeat="credit in movie.cast" ng-style="{'animation-delay': ($index * 50 + 500) + 'ms'}">
+                    <div class="img" style="background-image:url({{credit.mainPicture}})"></div>
+                    <p class="name">{{credit.name}}</p>
+                    <p class="role">{{credit.character}}</p>
+                </div>
+            </div>
+            <div class="credits">
+                <div class="credit credit-small" ng-repeat="credit in movie.crew" ng-style="{'animation-delay': ($index * 50 + 500) + 'ms'}">
+                    <div class="img" style="background-image:url({{credit.mainPicture}})"></div>
+                    <p class="name">{{credit.name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-youtube" ng-show="idYoutubeOpen">
+    <div class="modal-close" ng-click="youtubeClose()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
+    <iframe width="100%" height="100%" ng-src="{{'https://www.youtube.com/embed/' + idYoutubeOpen}}" frameborder="0" allowfullscreen></iframe>
+</div>
+<script>
+    $(window).scroll(function() {
+        if(window.innerHeight + $(window).scrollTop() == $(document).height()) {
+            var scope = angular.element(document.getElementById("controller")).scope();
+            scope.nextPage();
+        }
+    });
+    $(document).mousemove(function(e) {
+        if (e.pageX < 10) {
+            var scope = angular.element(document.getElementById("controller")).scope();
+            scope.panelFilterOpen();
+        }
+    });
+
+    $('#filter').mouseleave(function(){
+        var scope = angular.element(document.getElementById("controller")).scope();
+        scope.panelFilterClose();
+    });
+</script>

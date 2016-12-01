@@ -1,0 +1,25 @@
+{
+  "name": "back",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Back docker will be up and running in 10 seconds' && sleep 10 && nodemon -L app/server/app.js"
+  },
+  "dependencies": {
+    "socket.io": ">= 1.4.8",
+    "express" : ">= 4.8.7",
+    "mongodb": ">= 2.2.10",
+    "body-parser": ">= 1.0.1",
+    "cookie-parser": ">= 1.4.3",
+    "promise": ">= 7.1.1",
+    "xss": ">= 0.2.13",
+    "nodemailer": "0.7.1",
+    "request": ">= 2.5.0",
+    "yify-subs": ">= 1.0.0",
+    "adm-zip": ">= 0.4.7",
+    "mkdirp": ">= 0.5.1",
+    "srt-to-vtt": ">= 1.1.1",
+    "cron": ">= 1.1.1",
+    "moment": ">= 2.16.0"
+  }
+}

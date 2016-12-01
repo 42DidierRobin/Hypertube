@@ -1,0 +1,74 @@
+torrent:
+    build: torrent
+    ports:
+        - "5002:5002"
+        - "5003:5003"
+    volumes:
+        - "./torrent/app:/src/app"
+    net: "host"
+    cpuset: "2"
+    mem_limit: 5000m
+    memswap_limit: 5000m
+    privileged: true
+
+mongo:
+    build: mongo
+    ports:
+        - "4202:27017"
+    volumes:
+        - "./mongo/data:/data/db"
+    command: --auth
+
+back:
+    build: back
+    ports:
+        - "4201:4201"
+        - "4204:4204"
+    volumes:
+        - "./back/app:/src/app"
+        - "./back/subtitle/error:/subtitle/error"
+    links:
+        - mongo:mongo
+    environment:
+        - ipHost=XXX.XXX
+        - apiPort=4201
+        - dbPort=4202
+        - mailPort=4203
+        - apiSocketPort=4204
+        - torrentPort=5002
+        - searchPort=4206
+        - dbUserName=HypertubeUser
+        - dbPassword=42Hypertube42
+
+mail_dev:
+    image : djfarrelly/maildev
+    ports:
+        - "4242:80"
+        - "4203:25"
+
+search:
+    build: search-engine
+    ports:
+        - "4206:6002"
+    volumes:
+        - "./search-engine/app:/src/app"
+    links:
+        - mongo:mongo
+    environment:
+        - ipHost=XXX.XXX
+        - apiPort=4201
+        - dbPort=4202
+        - mailPort=4203
+        - apiSocketPort=4204
+        - torrentPort=4205
+        - searchPort=4206
+        - dbUserName=HypertubeUser
+        - dbPassword=42Hypertube42
+
+front:
+    image: nginx:latest
+    ports:
+        - "80:80"
+    volumes:
+        - ./front/www:/var/www/html
+        - ./front/conf.d:/etc/nginx/conf.d:ro

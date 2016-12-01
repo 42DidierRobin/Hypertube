@@ -1,0 +1,79 @@
+<html>
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>Hypertube</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-cookies.min.js"></script>
+    <script src="js/angular-resource.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/route.js"></script>
+    <script src="app/controller/signController.js"></script>
+    <script src="app/controller/signTokenController.js"></script>
+    <script src="app/controller/profilController.js"></script>
+    <script src="app/controller/signOutController.js"></script>
+    <script src="app/controller/searchController.js"></script>
+    <script src="app/controller/playerController.js"></script>
+    <script src="app/controller/lostController.js"></script>
+    <script src="app/controller/emailTokenController.js"></script>
+    <script src="app/service/translationService.js"></script>
+    <script src="app/service/checkService.js"></script>
+    <script src="app/service/requestService.js"></script>
+    <script src="app/service/torrentService.js"></script>
+    <script src="app/service/socketService.js"></script>
+    <script src="app/factory/userFactory.js"></script>
+    <script src="app/factory/movieFactory.js"></script>
+    <script src="app/factory/commentFactory.js"></script>
+    <script src="http://XXX.XXX:4204/socket.io/socket.io.js"></script>
+</head>
+<body ng-app="hypertube">
+    <nav ng-if="privateToken">
+        <ul class="left md-center">
+            <a href="/"><img src="img/logo.png" alt="logo" class="logo"></a>
+        </ul>
+        <ul class="center">
+            <a href="/"><li>{{translate.header.library}}</li></a>
+            <li><input type="text" ng-model="value" ng-keyup="rootSearch(value)"></li>
+        </ul>
+        <ul class="right md-center">
+            <a href="/profil"><li><div class="profil" style="background-image:url({{me.base64}})"></div></li></a>
+            <li class="language"><span ng-class="{'selected':language=='en'}" ng-click="changeLanguage('en')">en</span> | <span ng-class="{'selected':language=='fr'}" ng-click="changeLanguage('fr')">fr</span></li>
+            <li ng-click="notificationToggle()"><i class="fa fa-circle" aria-hidden="true"></i></li>
+            <a href="/signOut"><li><i class="fa fa-sign-out" aria-hidden="true"></i></li></a>
+        </ul>
+    </nav>
+    <nav ng-if="!privateToken">
+        <ul class="left"></ul>
+        <ul class="center">
+            <a href="/sign"><img src="img/logo.png" alt="logo" class="logo"></a>
+        </ul>
+        <ul class="right md-center">
+            <li class="language"><span ng-class="{'selected':language=='en'}" ng-click="changeLanguage('en')">en</span> | <span ng-class="{'selected':language=='fr'}" ng-click="changeLanguage('fr')">fr</span></li>
+        </ul>
+    </nav>
+    <div class="notification" ng-show="notificationOpen">
+        <div ng-repeat="(x, y) in getIndex()" ng-if="torrentInDownload[y].state!='refuse'">
+            <a href="/t/{{torrentInDownload[y].imdbToken}}">
+                <p>{{torrentInDownload[y].title}}</p>
+                <div class="picture" style="background-image: url({{torrentInDownload[y].mainPicture}});"></div>
+                <span ng-if="torrentInDownload[y].progress" class="download"><div><div ng-style="{width: torrentInDownload[y].progress + '%'}"></div></div></span>
+            </a>
+        </div>
+        <div class="close" ng-click="notificationOpen=0"><i class="fa fa-times" aria-hidden="true"></i></div>
+    </div>
+    <div class="loading" ng-if="loading"><div></div></div>
+    <div class="global-error" ng-if="globalError"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{{globalError}}</div>
+    <div class="global-success" ng-if="globalSuccess"><i class="fa fa-check" aria-hidden="true"></i>{{globalSuccess}}</div>
+    <div class="container page" ng-view id="controller"></div>
+    </div>
+    <footer>
+        <p>made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="http://github.com/miniponps">adespond@42</a>, <a href="http://github.com/vbraeke">vbraeke@42</a> and <a href="http://github.com/mathiisss">rdidier@42</a></p>
+    </footer>
+</body>
+</html>

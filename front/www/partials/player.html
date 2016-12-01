@@ -1,0 +1,97 @@
+<div class="video">
+    <video controls="controls" crossorigin="anonymous" autoplay preload='auto'>
+        <source ng-src="{{source}}" type='video/x-matroska'/>
+        <track ng-repeat="subtitle in data.subtitles"
+               label="{{subtitle}}"
+               ng-src="{{getURLSubtitle(data.imdbToken, subtitle)}}"
+               kind="subtitles"
+               srclang="{{subtitle}}">
+    </video>
+    <div class="show-comment" ng-repeat="comment in data.comments" ng-show="comment.time < player.timer && comment.time > player.timer - 5 && player.livefeed && comment.time != 0">
+        {{comment.commentText}}<p>{{comment.user}}</p>
+    </div>
+</div>
+<div class="comment-form" ng-class="{'error': comment.error}">
+    <input type="text" name="comment" maxlength="128" class="comment" placeholder="{{translate.player.comment}}" ng-model="comment.comment">
+    <input type="text" class="timer" value="{{translate.player.linkTime}}" readonly ng-class="{'timerOn': comment.timer}" ng-click="comment.timer = !comment.timer">
+    <input type="text" name="time" id="time" class="time" ng-model="comment.time">
+    <button ng-click="sendComment()">{{translate.player.send}}</button>
+    <input type="text" class="livefeed" value="{{translate.player.liveFeed}}" readonly ng-class="{'livefeedOn': player.livefeed}" ng-click="player.livefeed = !player.livefeed">
+</div>
+<div class="modal-player">
+    <div class="modal-body">
+        <div class="modal-poster"><img src="{{data.mainPicture}}" alt=""></div>
+        <div class="modal-background" ng-if="data.backPicture" style="background-image: url({{data.backPicture}})"></div>
+        <div class="modal-content">
+            <h1>{{data.title}}</h1>
+            <p class="subInfo">
+                <span ng-repeat="genre in data.genres">{{translate.categories[genre.name]}}</span><br>
+                <span>{{data.release_date | date : "dd.MM.yyyy"}}</span><br>
+                <span>{{data.rating}}/10</span>
+            </p>
+            <div class="comments" ng-show="data.comments.length != 0">
+                <h6>{{translate.player.comment}}</h6>
+                <div class="comment" ng-repeat="(key, comment) in data.comments | orderBy:'time'">
+                    <p>{{comment.commentText}}</p>
+                    <p class="author">
+                        <span ng-if="comment.user==me.pseudo" ng-click="deleteComment(comment.id, key)"><i class="fa fa-times" aria-hidden="true"></i> | </span>
+                        <span ng-if="comment.time!=0" onclick="goAt(this)" data-time="{{comment.time}}">at {{comment.time | timeFilter}} | </span>
+                        <a href="/profil/{{comment.user}}">{{comment.user}}</a>
+                    </p>
+                </div>
+            </div>
+            <p class="overview">{{data.overview}}</p>
+            <div class="credits">
+                <div class="credit" ng-repeat="credit in data.cast" ng-style="{'animation-delay': ($index * 50 + 500) + 'ms'}">
+                    <div class="img" style="background-image:url({{credit.mainPicture}})"></div>
+                    <p class="name">{{credit.name}}</p>
+                    <p class="role">{{credit.character}}</p>
+                </div>
+            </div>
+            <div class="credits">
+                <div class="credit credit-small" ng-repeat="credit in data.crew" ng-style="{'animation-delay': ($index * 50 + 500) + 'ms'}">
+                    <div class="img" style="background-image:url({{credit.mainPicture}})"></div>
+                    <p class="name">{{credit.name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var video;
+
+    $(document).ready(function(){
+        video = $('video')[0];
+        var scope = angular.element(document.getElementById("controller")).scope();
+
+        video.addEventListener('timeupdate', function(e){
+            $('#time').val(Math.ceil(e.target.currentTime) - 1);
+            $('#time').trigger('input');
+            scope.player.timer = e.target.currentTime + 1;
+        });
+
+        /*video.onerror = function(e){
+            video.currentTime = 0;
+            video.play();
+        };*/
+
+        /*video.onloadedmetadata = function(e){
+            //console.log('salut');
+            //video.seekable.end(0.1);
+            //console.log(e);
+            duration = e.target.duration;
+            console.log(duration);
+        };*/
+
+        video.onstalled = function(e){
+            //console.log('salut');
+            video.currentTime = 0;
+            video.load();
+        }
+    });
+
+    function goAt(e){
+        video.currentTime = $(e).data('time');
+        video.play();
+    }
+</script>

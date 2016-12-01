@@ -1,0 +1,16 @@
+<div class="container center" ng-if="!done">
+    <div class="panel panel-padding signup">
+        <h1>{{translate.lost.title}}</h1>
+        <form>
+            <input type="email" placeholder="{{translate.general.email}}" ng-model="email">
+            <button ng-click="lost(email)">{{translate.sign.lostInButton}}</button>
+        </form>
+    </div>
+</div>
+<div class="container center" ng-if="done">
+    <div class="panel panel-padding signup signup-success">
+        <h1>{{translate.lost.title}}</h1>
+        <i class="fa fa-heart" aria-hidden="true"></i>
+        <p>{{translate.lost.text}}</p>
+    </div>
+</div>

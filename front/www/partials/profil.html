@@ -1,0 +1,68 @@
+<div class="container center" ng-if="type=='user'">
+    <div class="panel panel-padding signup">
+        <h1>{{translate.profil.title}} {{translate.general.of}} {{user.pseudo}}</h1>
+        <div class="pictureProfil" style="background-image:url({{user.base64}})"></div>
+        <p class="value">{{user.firstName}}</p>
+        <p class="title">{{translate.general.firstName}}</p>
+        <p class="value">{{user.lastName}}</p>
+        <p class="title">{{translate.general.lastName}}</p>
+        <p class="value">{{user.lang}}</p>
+        <p class="title">{{translate.general.language}}</p>
+    </div>
+</div>
+<div class="container center" ng-if="type=='user'">
+    <div class="panel panel-padding signup">
+        <h1>{{translate.profil.listSeen}}</h1>
+        <div ng-repeat="seen in user.seenList" class="listMovieSeen">
+            <img ng-src="{{seen.mainPicture}}" alt="" ng-click="openMovie(seen.imdbToken)">
+        </div>
+    </div>
+</div>
+<div class="panel panel-padding signup" ng-if="type=='me'" ng-hide="!me.email" ng-class="{'success' : emailSuccess}">
+    <h1>{{translate.profil.changeEmail}}</h1>
+    <input type="email" ng-model="me.email" ng-class="{'error': emailError}">
+    <p class="error" ng-if="emailError">
+        <span ng-if="emailError.reg">{{translate.general.emailError}}</span>
+        <span ng-if="emailError.exist">{{translate.general.alreadyTaken}}</span>
+    </p>
+    <button ng-click="changeEmail(me.email)">{{translate.profil.modify}}</button>
+</div>
+<div class="panel panel-padding signup" ng-if="type=='me'" ng-hide="!me.email" ng-class="{'success' : passwordSuccess}">
+    <h1>{{translate.profil.changePassword}}</h1>
+    <input type="password" ng-model="me.password" ng-class="{'error': passwordError}">
+    <p class="error" ng-if="passwordError">
+        <span ng-if="passwordError">{{translate.general.between}} 4 {{translate.general.and}} 30 {{translate.general.chars}}</span>
+    </p>
+    <button ng-click="changePassword(me.password)">{{translate.profil.modify}}</button>
+</div>
+<div class="panel panel-padding signup" ng-if="type=='me'" ng-hide="!me.email" ng-class="{'success' : infoSuccess}">
+    <h1>{{translate.profil.changeInfo}}</h1>
+    <input type="text" ng-model="me.firstName" ng-class="{'error': infoError.firstName}">
+    <p class="error" ng-if="infoError.firstName">
+        <span ng-if="infoError.firstName.size">{{translate.general.between}} {{infoError.firstName.size.min}} {{translate.general.and}} {{infoError.firstName.size.max}} {{translate.general.chars}}</span>
+        <span ng-if="infoError.firstName.char">{{translate.general.charInvalid}}</span>
+    </p>
+    <input type="text" ng-model="me.lastName" ng-class="{'error': infoError.lastName}">
+    <p class="error" ng-if="infoError.lastName">
+        <span ng-if="infoError.lastName.size">{{translate.general.between}} {{infoError.lastName.size.min}} {{translate.general.and}} {{infoError.lastName.size.max}} {{translate.general.chars}}</span>
+        <span ng-if="infoError.lastName.char">{{translate.general.charInvalid}}</span>
+    </p>
+    <button ng-click="changeInfo(me.firstName, me.lastName)">{{translate.profil.modify}}</button>
+</div>
+<div class="panel panel-padding signup" ng-if="type=='me'" ng-hide="!me.email" ng-class="{'success' : pictureSuccess}">
+    <h1>{{translate.profil.changePicture}}</h1>
+    <div class="file" ng-class="{'error': pictureError}">
+        <p class="text" ng-if="me.newpicture">{{translate.sign.pictureDone}}</p>
+        <p class="text" ng-if="!me.newpicture">{{translate.sign.picture}}</p>
+        <p class="error" ng-if="pictureError.picture">
+            <span ng-if="pictureError.picture.file">{{translate.general.fileEmpty}}</span>
+            <span ng-if="pictureError.picture.type">{{translate.general.fileTypeError}}</span>
+            <span ng-if="pictureError.picture.size">{{translate.general.between}} {{pictureError.picture.size.min}} {{translate.general.and}} {{pictureError.picture.size.max}} {{translate.general.bytes}}</span>
+        </p>
+        <input fileread="me.newpicture" type="file" name="picture"/>
+    </div>
+    <button ng-click="changePicture(me.newpicture)">{{translate.profil.modify}}</button>
+</div>
+<div ng-if="type=='me'" ng-show="!me.email">
+    <div class="global-error">{{translate.profil.noModifyOmniAuth}}</div>
+</div>

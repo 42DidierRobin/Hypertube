@@ -1,0 +1,14 @@
+{
+  "name": "app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon -L app/index.js"
+  },
+  "dependencies": {
+    "socket.io": "1.4.8",
+    "bencode": "^0.10.0",
+    "bignum": "^0.12.5",
+    "follow-redirects" : ">= 0.2.0"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "sign": {
+    "signInTitle": "Sign in",
+    "signUpTitle": "Sign up",
+    "signInButton": "Sign in",
+    "signUpButton": "Sign up",
+    "or": "ou",
+    "welcome": "Welcome",
+    "sendEmail": "Check email",
+    "noAccountFound": "No account found",
+    "verifyYourEmail": "Check email first",
+    "picture": "Upload a picture",
+    "pictureDone": "You're awesome",
+    "lost": "Lost",
+    "lostInButton": "Im a noob..",
+    "passwordNotSecure" : "Not enough secure password, please choose an other one"
+  },
+  "signToken": {
+    "title": "Thanks dude !",
+    "text": "Your account has been activated ! Pop the corn"
+  },
+  "lost": {
+    "title": "Are you bad ?",
+    "text": "Check up your mail noob"
+  },
+  "profil": {
+    "title": "Profil",
+    "changeEmail": "Change ton email",
+    "modify": "Update",
+    "changePassword": "Change your password",
+    "changeInfo": "Change your information",
+    "changePicture": "Change your picture",
+    "listSeen": "Movie seen list",
+    "noModifyOmniAuth" : "You can not change a profile linked by another account (Facebook, 42, ...)"
+  },
+  "general": {
+    "pseudoOrEmail": "Pseudo or email",
+    "password": "Password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "pseudo": "Login",
+    "retypePassword": "Enter your password again",
+    "email": "Email",
+    "emailError": "This is not an email",
+    "alreadyTaken": "Already taken !",
+    "and": "and",
+    "between": "between",
+    "chars": "caractere",
+    "charInvalid": "Invalid Caractere",
+    "fileEmpty": "Empty file",
+    "fileTypeError": "File isn't authorized",
+    "bytes": "bytes",
+    "all": "all",
+    "year": "Year",
+    "rating": "Rating",
+    "sort": "Sort",
+    "title": "Title",
+    "category": "Category"
+  },
+  "header": {
+    "library": "Library"
+  },
+  "movie": {
+    "watchnow": "Watch !",
+    "error" : {
+      "extension" : "extension is not valid",
+      "peer" : "Not enough peer",
+      "file" : "The file is corrputed",
+      "general" : "The file is corrupted",
+      "flood" : "Stop flood bro !"
+    }
+  },
+  "player": {
+    "comment": "Comment",
+    "linkTime": "link time",
+    "send": "Sent",
+    "liveFeed": "Live feed"
+  },
+  "categories": {
+    "Action": "Action",
+    "Animation": "Animation",
+    "Comedy": "Comedy",
+    "Documentary": "Documentary",
+    "Family": "Family",
+    "Film-Noir": "Black movie",
+    "Horror": "Horror",
+    "Musical": "Music",
+    "Romance": "Love storie",
+    "Sport": "Sport",
+    "War": "War",
+    "Adventure": "Adventure",
+    "Biography": "Biography",
+    "Crime": "Crime",
+    "Drama": "Drama",
+    "Fantasy": "Fantasy",
+    "History": "History",
+    "Music": "Music",
+    "Mystery": "Mystery",
+    "Sci-Fi": "Science fiction",
+    "Thriller": "Thriller",
+    "Western": "Western",
+    "Science Fiction": "Science fiction"
+  }
+}

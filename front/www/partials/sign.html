@@ -1,0 +1,104 @@
+<div class="container center">
+    <div class="panel panel-padding signup">
+        <h1>{{translate.sign.signInTitle}}</h1>
+        <form>
+            <input type="text" placeholder="{{translate.general.pseudo}}" ng-model="user.signIn.pseudo" ng-class="{'error': signInError}">
+            <p class="error" ng-if="signInError">
+                <span ng-if="signInError==1">{{translate.sign.noAccountFound}}</span>
+                <span ng-if="signInError==2">{{translate.sign.verifyYourEmail}}</span>
+            </p>
+            <input type="password" placeholder="{{translate.general.password}}" ng-model="user.signIn.password" ng-class="{'error': signInError}">
+            <p class="error" ng-if="signInError">
+                <span ng-if="signInError==1">{{translate.sign.noAccountFound}}</span>
+                <span ng-if="signInError==2">{{translate.sign.verifyYourEmail}}</span>
+            </p>
+            <button ng-click="signIn(user.signIn)" class="password">{{translate.sign.signInButton}}</button>
+            <a href="/lost"><button class="lost">{{translate.sign.lost}}</button></a>
+        </form>
+        <h4>{{translate.sign.or}}</h4>
+        <div id="status"></div>
+        <button class="facebook" onClick="checkLoginState()"><i class="fa fa-facebook-official" aria-hidden="true"></i></button>
+        <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=abd9e4056a4f6c145b85" ng-click="loading = 1"><button class="github"><i class="fa fa-github" aria-hidden="true"></i></button></a>
+        <a href="https://slack.com/oauth/authorize?scope=identity.basic&client_id=3329266210.108193513636" ng-click="loading = 1"><button class="slack"><i class="fa fa-slack" aria-hidden="true"></i></button></a>
+        <a href="https://www.linkedin.com/oauth/v2/authorization?client_id=78md4maw3ifr16&redirect_uri=http://XXX.XXX?from=Linkedin&response_type=code" ng-click="loading = 1"><button class="linkedin"><i class="fa fa-linkedin" aria-hidden="true"></i></button></a>
+        <a href="https://api.intra.42.fr/oauth/authorize?client_id=19f6826dc7399acdad8b453be8d17621be14572f1de531ba711cb78f51414694&redirect_uri=http://XXX.XXX?from=Ecole42&response_type=code&scope=public" ng-click="loading = 1"><button class="ecole42">
+            <img src="img/42.png" alt=""></button></a>
+    </div>
+    <div class="panel panel-padding signup" ng-if="!SignUpSuccess">
+        <h1>{{translate.sign.signUpTitle}}</h1>
+        <input type="email" placeholder="{{translate.general.email}}" ng-model="user.signUp.email" ng-class="{'error': SignUpError.email}">
+        <p class="error" ng-if="SignUpError.email">
+            <span ng-if="SignUpError.email.reg">{{translate.general.emailError}}</span>
+            <span ng-if="SignUpError.email.exist">{{translate.general.alreadyTaken}}</span>
+        </p>
+        <input type="text" placeholder="{{translate.general.pseudo}}" ng-model="user.signUp.pseudo" ng-class="{'error': SignUpError.pseudo}">
+        <p class="error" ng-if="SignUpError.pseudo">
+            <span ng-if="SignUpError.pseudo.size">{{translate.general.between}} {{SignUpError.pseudo.size.min}} {{translate.general.and}} {{SignUpError.pseudo.size.max}} {{translate.general.chars}}</span>
+            <span ng-if="SignUpError.pseudo.char">{{translate.general.charInvalid}}</span>
+            <span ng-if="SignUpError.pseudo.exist">{{translate.general.alreadyTaken}}</span>
+        </p>
+        <input type="text" placeholder="{{translate.general.firstName}}" ng-model="user.signUp.firstName" ng-class="{'error': SignUpError.firstName}">
+        <p class="error" ng-if="SignUpError.firstName">
+            <span ng-if="SignUpError.firstName.size">{{translate.general.between}} {{SignUpError.firstName.size.min}} {{translate.general.and}} {{SignUpError.firstName.size.max}} {{translate.general.chars}}</span>
+            <span ng-if="SignUpError.firstName.char">{{translate.general.charInvalid}}</span>
+        </p>
+        <input type="text" placeholder="{{translate.general.lastName}}" ng-model="user.signUp.lastName" ng-class="{'error': SignUpError.lastName}">
+        <p class="error" ng-if="SignUpError.lastName">
+            <span ng-if="SignUpError.lastName.size">{{translate.general.between}} {{SignUpError.lastName.size.min}} {{translate.general.and}} {{SignUpError.lastName.size.max}} {{translate.general.chars}}</span>
+            <span ng-if="SignUpError.lastName.char">{{translate.general.charInvalid}}</span>
+        </p>
+        <input type="password" placeholder="{{translate.general.password}}" ng-model="user.signUp.password" ng-class="{'error': SignUpError.password}">
+        <p class="error" ng-if="SignUpError.password">
+            <span ng-if="SignUpError.password.size">{{translate.general.between}} {{SignUpError.password.size.min}} {{translate.general.and}} {{SignUpError.password.size.max}} {{translate.general.chars}}</span>
+            <span ng-if="SignUpError.password.secure">{{translate.sign.passwordNotSecure}}s</span>
+        </p>
+        <div class="file" ng-class="{'error': SignUpError.picture}">
+            <p class="text" ng-if="user.signUp.picture">{{translate.sign.pictureDone}}</p>
+            <p class="text" ng-if="!user.signUp.picture">{{translate.sign.picture}}</p>
+            <p class="error" ng-if="SignUpError.picture">
+                <span ng-if="SignUpError.picture.file">{{translate.general.fileEmpty}}</span>
+                <span ng-if="SignUpError.picture.type">{{translate.general.fileTypeError}}</span>
+                <span ng-if="SignUpError.picture.size">{{translate.general.between}} {{SignUpError.picture.size.min}} {{translate.general.and}} {{SignUpError.picture.size.max}} {{translate.general.bytes}}</span>
+            </p>
+            <input fileread="user.signUp.picture" type="file" name="picture"/>
+        </div>
+        <button ng-click="signUp(user.signUp)">{{translate.sign.signUpButton}}</button>
+    </div>
+    <div class="panel panel-padding signup signup-success" ng-if="SignUpSuccess">
+        <h1>{{translate.sign.welcome}}</h1>
+        <h5> {{success.pseudo}}</h5>
+        <i class="fa fa-heart" aria-hidden="true"></i>
+        <p>{{translate.sign.sendEmail}}</p>
+    </div>
+</div>
+<script>
+    function checkLoginState() {
+        FB.login(function(response) {
+            if (response.authResponse) {
+                var scope = angular.element(document.getElementById("controller")).scope();
+                scope.facebook(response.authResponse.accessToken, response.authResponse.userID);
+            } else {
+
+            }
+        }, {
+            scope: 'email'
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '374576442873637',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+    };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>

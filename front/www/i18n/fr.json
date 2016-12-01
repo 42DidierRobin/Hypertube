@@ -1,0 +1,106 @@
+{
+    "sign" : {
+        "signInTitle" : "Connexion",
+        "signUpTitle" : "Inscription",
+        "signInButton" : "Connexion",
+        "signUpButton" : "Inscription",
+        "or" : "ou",
+        "welcome" : "Bienvenue",
+        "sendEmail" : "Contrôle ton email",
+        "noAccountFound" : "Pas de compte trouvé",
+        "verifyYourEmail" : "Tu dois vérifiez ton email avant",
+        "picture" : "Upload une image",
+        "pictureDone" : "Tu es beau !",
+        "lost" : "Perdu",
+        "lostInButton" : "Je suis nul...",
+        "passwordNotSecure" : "Ton mot de passe n'est pas assez sécurisé"
+    },
+    "signToken" : {
+        "title" : "Merci mec !",
+        "text" : "Ton compte est maintenant activé, tu peux préparer tes popcorns !"
+    },
+    "lost" : {
+        "title" : "Est-tu nul ?",
+        "text" : "Regarde tes email, noob..."
+    },
+    "profil" : {
+        "title" : "Profile",
+        "changeEmail" : "Modifie ton email",
+        "modify" : "Modifier",
+        "changePassword" : "Modifie ton mot de passe",
+        "changeInfo" : "Modifie tes informations",
+        "changePicture" : "Modifie ta photo",
+        "listSeen" : "Liste des films vus",
+        "noModifyOmniAuth" : "Vous ne pouvez pas modifier un profile lié par un autre compte (Facebook, 42, etc...)"
+    },
+    "general" : {
+        "pseudoOrEmail" : "Pseudo ou email",
+        "password" : "Mot de passe",
+        "firstName" : "Prénom",
+        "lastName" : "Nom",
+        "pseudo" : "Pseudo",
+        "retypePassword" : "Retape ton mot de passe",
+        "email" : "Email",
+        "emailError" : "Ce n'est pas un email",
+        "alreadyTaken" : "C'est déjà prit !",
+        "and" : "et",
+        "between" : "entre",
+        "chars" : "caractère",
+        "charInvalid" : "Caractere invalide",
+        "fileEmpty" : "Le fichier est vide",
+        "fileTypeError" : "Le fichier n'est pas autorisé",
+        "bytes" : "bytes",
+        "all" : "Tout",
+        "year" : "Année",
+        "rating" : "Note",
+        "sort" : "Tri",
+        "title" : "Titre",
+        "category" : "Categorie",
+        "of" : "de",
+        "language" : "Langue"
+    },
+    "header" : {
+        "library" : "Bibliothèque"
+    },
+    "movie" : {
+        "watchnow" : "Regardez !",
+        "error" : {
+            "extension" : "L'extension n'est pas valide",
+            "peer" : "Pas assez de peer",
+            "file" : "Le fichier est corrompu",
+            "general" : "Le fichier est corrompu",
+            "flood" : "Stop flood bro !"
+        }
+    },
+    "player" : {
+        "comment" : "Commentaire",
+        "linkTime" : "lié temps",
+        "send" : "Envoyé",
+        "liveFeed" : "Direct"
+    },
+    "categories" : {
+        "Action" : "Action",
+        "Animation" : "Animation",
+        "Comedy" : "Comédie",
+        "Documentary" : "Documentaire",
+        "Family" : "Famille",
+        "Film-Noir" : "Film-noir",
+        "Horror" : "Horreur",
+        "Musical" : "Musical",
+        "Romance" : "Romance",
+        "Sport" : "Sport",
+        "War" : "Guerre",
+        "Adventure" : "Aventure",
+        "Biography" : "Biographie",
+        "Crime" : "Crime",
+        "Drama" : "Drama",
+        "Fantasy" : "Fantaisie",
+        "History" : "Histoire",
+        "Music" : "Musique",
+        "Mystery" : "Mystère",
+        "Sci-Fi" : "Science fiction",
+        "Thriller" : "Thriller",
+        "Western" : "Western",
+        "Science Fiction" : "Science fiction"
+    }
+}

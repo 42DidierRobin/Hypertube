@@ -1,0 +1,17 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+  "start": "echo 'Search-engine docker will be up and running in 10 seconds' && sleep 10 && nodemon -L app/src/server/app.js"
+  },
+  "dependencies": {
+    "express" : "4.8.7",
+    "body-parser": "1.0.1",
+    "cookie-parser": "1.4.3",
+    "cheerio": "^0.22.0",
+    "request": "^2.74.0",
+    "mongodb": "2.2.10",
+    "cron" : "1.1.1"
+  }
+}
